@@ -6,13 +6,16 @@ form.addEventListener('submit', addItem);
 
 function addItem(e){
   e.preventDefault();
-  var newName = document.getElementById('name');
-  var newEmail = document.getElementById('email');
+  let myObj={
+    newName : document.getElementById('name').value,
+    newEmail : document.getElementById('email').value
+  };
+let obj=JSON.stringify(myObj);
+
  
 
-  localStorage.setItem('Name',newName.value);
-  localStorage.setItem('Email',newEmail.value);
-  console.log(localStorage.getItem('Name'));
-  console.log(localStorage.getItem('Email'));
+  localStorage.setItem('myObj',obj);
+  
+  
 }
 
