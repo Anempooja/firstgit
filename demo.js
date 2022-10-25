@@ -11,4 +11,4 @@ let sum=function(a){
     }
 }    
 let add=sum(5)
-add(10)
+add(20)
