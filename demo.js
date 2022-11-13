@@ -1,14 +1,46 @@
-let multiply=function(x,y){
-    console.log(x*y)
-}    
-let multiplyTwo=multiply.bind(this,2)
-multiplyTwo(5)
-let multiplyThree=multiply.bind(this,3)
-multiplyTwo(15)
-let sum=function(a){
-    return function(b){
-        console.log(a+b)
+function savetoLocalstorage(e){
+    e.preventDefault()
+    amount=e.target.amount.value;
+    description=e.target.description.value;
+    category=e.target.category.value;
+    const obj ={
+        amount,
+        description,
+        category
     }
-}    
-let add=sum(5)
-add(20)
+    localStorage.setItem(obj.description,JSON.stringify(obj))    
+    createelement(e)
+}
+function createelement(e){
+    amount=e.target.amount.value;
+    description=e.target.description.value;
+    category=e.target.category.value;
+    
+    const parentNode = document.getElementById('detailClass');
+    const childHTML = `<li id=${description}>${amount}- ${description} - ${category}
+    <button onclick=deleteExpense('${description}')> Delete  </button>
+    <button onclick=editExpense('${amount}','${description}','${category}')>Edit </button>
+ </li>`;
+ 
+ parentNode.innerHTML = parentNode.innerHTML + childHTML
+ amount=" "
+ description=" "
+ category=" ";
+}
+function deleteExpense(description){
+    localStorage.removeItem(description)
+    removeExpense(description)
+}
+function removeExpense(description){
+    const ul=document.getElementById('detailClass')
+    const li=document.getElementById(description)
+
+        ul.removeChild(li)
+    
+}
+function editExpense(amount,description,category){
+    document.getElementById('amount').value=amount
+    document.getElementById('category').value=category
+    document.getElementById('description').value=description
+    removeExpense(description)
+}
