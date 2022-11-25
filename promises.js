@@ -73,9 +73,12 @@ function create4thPost(post,callback){
 }
 
 createPost({title:'Post Three', body:'This is post three'});
-create4thPost({title:'Post Four', body:'This is post four'});
+create4thPost({title:'Post Four', body:'This is post four'})
 
 Promise.all([createPost,create4thPost])
-.then(getPosts)
+.then(()=>{
+    getPosts()
+    deletePost()
+})
 .catch(err=> console.log(err))
 
