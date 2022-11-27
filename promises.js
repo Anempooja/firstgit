@@ -19,29 +19,29 @@ function getPosts(){
     },1000);
 }
 
-function createPost(post){
-    return new Promise((resolve,reject)=>{
+async function createPost(post){
+    return await new Promise((resolve,reject)=>{
         setTimeout(()=>{
             posts.push({...post,createdAt:new Date().getTime()});
            
         
         const error=false;
         if(!error){
-            console.log('Before creating post4 user last active time:',new Date())
+            
             resolve();
         }
         else{
             reject('Error:something wemt wrong');
         }
-        console.log(posts)
+        
         
     },1000);
 });
 
 }
 
-function deletePost(){
-    return new Promise((resolve,reject)=>{
+async function deletePost(){
+    return await new Promise((resolve,reject)=>{
         setTimeout(()=>{
             if(posts.length>0){
                 resolve(posts.pop());
@@ -67,7 +67,6 @@ function create4thPost(post,callback){
         else{
             reject('Error:something wemt wrong');
         }
-        console.log('after creating post 4 user last activity time',new Date().getTime())
     },1000);
 });
 }
