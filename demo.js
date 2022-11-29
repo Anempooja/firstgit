@@ -1,46 +1,70 @@
-function savetoLocalstorage(e){
-    e.preventDefault()
-    amount=e.target.amount.value;
-    description=e.target.description.value;
-    category=e.target.category.value;
-    const obj ={
-        amount,
-        description,
-        category
-    }
-    localStorage.setItem(obj.description,JSON.stringify(obj))    
-    createelement(e)
+const posts=[
+    {title:'post one',body:'This is post one',createdAt: new Date().getTime()},
+    {title:'post two',body:'This is post two',createdAt: new Date().getTime()}
+];
+let t=0;
+function getPost(){
+    clearInterval(t);
+    t=setInterval(()=> {
+        let output='';
+        for(var i=0;i<posts.length;i++){
+            output+=`<li>${posts[i].title}-last updated ${(new Date().getTime() - posts[i].createdAt)/1000}- seconds ago</li>`
+        };
+        document.body.innerHTML=output;
+    },1000);
 }
-function createelement(e){
-    amount=e.target.amount.value;
-    description=e.target.description.value;
-    category=e.target.category.value;
-    
-    const parentNode = document.getElementById('detailClass');
-    const childHTML = `<li id=${description}>${amount}- ${description} - ${category}
-    <button onclick=deleteExpense('${description}')> Delete  </button>
-    <button onclick=editExpense('${amount}','${description}','${category}')>Edit </button>
- </li>`;
- 
- parentNode.innerHTML = parentNode.innerHTML + childHTML
- amount=" "
- description=" "
- category=" ";
+function createPost(post,callback){
+    setTimeout(() => {
+        posts.push({...post,createdAt:new Date().getTime()});
+        callback();
+    },2000);
 }
-function deleteExpense(description){
-    localStorage.removeItem(description)
-    removeExpense(description)
+function create4thPost(post,callback){
+    setTimeout(() => {
+        posts.push({...post,createdAt:new Date().getTime()});
+        callback();
+    },1000);
 }
-function removeExpense(description){
-    const ul=document.getElementById('detailClass')
-    const li=document.getElementById(description)
+createPost({title:'Post Three', body:'This is post three'},getPost);
+create4thPost({title:'Post Four', body:'This is post four'},getPost);
 
-        ul.removeChild(li)
-    
+
+
+
+
+
+
+
+
+function deletePost(){
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            if(posts.length>0){
+                resolve(posts.pop());
+            }
+            else{
+                reject('Array is empty now')
+            }
+        },1000);
+    })
 }
-function editExpense(amount,description,category){
-    document.getElementById('amount').value=amount
-    document.getElementById('category').value=category
-    document.getElementById('description').value=description
-    removeExpense(description)
-}
+
+
+createPost({title: 'Post Three',body:'This is post three'})
+    .then(()=>{
+        getPosts()
+        deletePost().then(()=>{
+            getPosts();
+            deletePost().then(()=>{
+                getPosts();
+                deletePost().then(()=>{
+                    getPosts();
+                    deletePost().then(()=>{})
+                    .catch((err)=>{
+                        //console.log('Inside catch block:',err)
+                    })
+                }).catch((err)=>{})
+            }).catch((err)=>{})
+        })
+    })
+    .catch(err => console.log(err))

@@ -1,30 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form onsubmit="savetoLocalstorage(event)">
-    <label for="amount">Choose ExpenseAmount</label>
-    <input  type="number" id="amount" required >  
-    <label for="description">Choose description</label>
-    <input  type="text" id="description" required>  
-    <label for="category">Choose category</label>
-    <input  type="text" id="category" required>                                                                            
-    <button id="clickMe"> Add Expense</button>
-   
-   
-    <ul id="detailClass" class="list-group">
-       
-    </form>
+<html>
+    <body>
+        <form  onsubmit="saveToLocalStorage(event)">
+            <label> Name</label>
+            <input id='username' type="text" name="username"  required/>
+            <label> EmailId</label>
+            <input id='email' type="email" name="emailId"  required/>
+            <label> Phone Number</label>
+            <input id='phonenumber' type="tel" name="phonenumber" />
+            <button> Submit </button>
+        </form>
+        <ul id='listOfUsers'></ul>
 
 </body>
 </html>
-<script src="demo.js">
-    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.2.0/axios.min.js"></script>
+<script src="javascript.js">
+  
 
 </script>
