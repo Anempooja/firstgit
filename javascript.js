@@ -1,3 +1,4 @@
+
 function saveToLocalStorage(event) {
     event.preventDefault();
     const name = event.target.username.value;
@@ -11,36 +12,42 @@ function saveToLocalStorage(event) {
         email,
         phonenumber
     }
-    axios.post('https://crudcrud.com/api/c144b806ccc94078bd64d92343bc5cb7/appointmentapp',obj)
+    
+    axios.post("https://crudcrud.com/api/41f91c3b1c2e494db8353cbfc5e27dd5/appointmentData",obj)
     .then((response)=>{
-        showNewUserOnScreen(response.data)
-        console.log(response)
+        showNewUserOnScreen(response)
+        console.log(response )
     })
     .catch((err)=>{
         console.log(err)
     })
     //localStorage.setItem(obj.email, JSON.stringify(obj))
-    showNewUserOnScreen(obj)
+    //showNewUserOnScreen(obj)
 }
+
 window.addEventListener("DOMContentLoaded", () => {
-    const localStorageObj = localStorage;
-    const localstoragekeys  = Object.keys(localStorageObj)
-    for(var i =0; i< localstoragekeys.length; i++){
-        const key = localstoragekeys[i]
-        const userDetailsString = localStorageObj[key];
-        const userDetailsObj = JSON.parse(userDetailsString);
-        showNewUserOnScreen(userDetailsObj)
-    }
+    const data=axios.get("https://crudcrud.com/api/41f91c3b1c2e494db8353cbfc5e27dd5/appointmentData")
+    .then((response)=>{
+        console.log(response)
+        for(var i=0;i<response.length;i++){
+            showNewUserOnScreen(response[i])
+        }
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    console.log(data)
 })
 
 function showNewUserOnScreen(user){
+    
     document.getElementById('email').value = '';
     document.getElementById('username').value = '';
     document.getElementById('phonenumber').value ='';
    
 
     const parentNode = document.getElementById('listOfUsers');
-    const childHTML = `<li id=${user.email}> ${user.name} - ${user.email}
+    const childHTML = `<li> ${user.name} - ${user.email}
                             <button onclick=deleteUser('${user.email}')> Delete User </button>
                             <button onclick=editUserDetails('${user.email}','${user.name}','${user.phonenumber}')>Edit User </button>
                          </li>`
