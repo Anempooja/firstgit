@@ -1,19 +1,14 @@
-
-const http = require('http')
 const express=require('express')
+
+const adminRouter=require('./routes/admin')   //imports the admin file from routes file
+const shopRouter=require('./routes/shop')
 const bodyParser = require('body-parser')
 const app =express()
 app.use(bodyParser.urlencoded({extended:false}))
-app.use('/add-product',(req,res,next)=>{
-    res.send('<form action="/product" method="POST"><input type="text" name="title"><input type="text" name="title"><button type=""submit>add product</button>' )
-})
-app.use('/product',(req,res,next)=>{
-    console.log(req.body)
-    res.redirect('/')
-})
+app.use('/admin',adminRouter)  //this will call the code in the file
+app.use('/shop',shopRouter) 
 app.use((req,res,next)=>{
-    res.send('<h1> Hello </h1>')
+    res.status(404).send('<h1>Page not found</h1>')
 })
-
 app.listen(4000)
-    
+
