@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+    <style>
+        body{
+            padding:0;
+            margin:0;
+            background-color: white;
+        }
+        main{
+            padding: 1rem;
+        }
+        .main-header {
+            width :100%;
+            height:56px;
+            background-color:rgb(244, 223, 68);
+            padding:0 1.5rem;
+        }
+        .main-header_item-list{
+            list-style-type: none;
+            margin:0;
+            padding: 0;
+            display: flex;
+        }
+        .main-header_item{
+            margin:0;
+            padding:0;
+        }
+        .main-header_item a{
+            text-decoration: none;
+            padding:1rem ;
+            color: rgb(220, 54, 54);
+            
+        }
+        .main-header_item a:hover,
+        .main-header_item a:active,
+        .main-header_item a:active{
+            color:rgb(63, 16, 203)
+        }
+        .product-form{
+            background-color: rgb(242, 195, 67);
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            padding-left: 3rem;
+            display: block ;
+            width: 50%;
+            align-items: center;
+            border: 1px solid  rgb(192, 141, 10)  ;
+            border-radius: 2px;
+        }
+
+        .form-control label,
+        .form-control input{
+            
+            display:block;
+            width:90%
+            
+        }
+        .form-control input{ 
+           
+            border: 1px solid rgb(192, 141, 10) ;
+            font:inherit;
+            border-radius: 2px;
+        }
+        button{
+            
+            font:inherit;
+            border:2px solid black;
+            border-radius: 3px;
+            background: white;
+            color:rgb(158, 132, 44);
+            background-color:rgb(192, 238, 238);
+        }
+       button:hover,
+       button:active{
+        background-color: rgb(245, 201, 56);
+        color:white
+       }
+    </style>
+</head>
+<body>
+    
+
+    <header class="main-header">
+        <nav class="main-header-nav">
+            
+            <ul class="main-header_item-list">
+                <li class="main-header_item"><a href="/">chat</a></li>
+                <li class="main-header_item"><a href="/login">login</a></li>
+                <li class="main-header_item"><a class="active" href="/contactus">Contact us</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        
+        <form  class="product-form"  action="/success" method="get">
+            
+           
+            <div class="form-control">
+                <lable for="name">Name:</lable>
+                <input type="text" id="name" name="name">
+                <lable for="emailid">EmailId:</lable>
+                <input type="email" id="emailid" name="emailid">
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+    </main>
+</body>
+</html>
