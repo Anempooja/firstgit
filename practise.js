@@ -1,19 +1,24 @@
+const path = require('path');
 
-const errorController=require('./controllers/error404')
-const loginController=require('./controllers/login')
-const contactusController=require('./controllers/contactus')
-const chatController=require('./controllers/chat')
-const successController=require('./controllers/success')
-const express=require('express')
-const path= require('path')
-const app =express()
-app.use(express.static(path.join(__dirname,'/public')))
-app.get('/login',loginController.getlogin)
-app.get('/contactus',contactusController.getcontact)
-app.get('/success',successController.getSuccess)
+const express = require('express');
+const bodyParser = require('body-parser');
 
-app.get('/',chatController.getChat)
-app.post('/',chatController.postChat)
-app.use(errorController.get404)
+const errorController = require('./controllers/error');
 
-app.listen(4000)
+const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', 'views');
+
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/admin', adminRoutes);
+app.use(shopRoutes);
+
+app.use(errorController.get404);
+
+app.listen(4000);
