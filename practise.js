@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const errorController = require('./controllers/error');
-const db=require('./util/database');
+const sequelize=require('./util/database');
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -12,7 +12,7 @@ app.set('views', 'views');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
-const e = require('express');
+
 
 
 
@@ -23,5 +23,12 @@ app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
 app.use(errorController.get404);
+sequelize.sync().then((result)=>{
+    
+    app.listen(4000);
+})
+.catch((err)=>{
+    console.log(err)
+})
 
-app.listen(4000);
+
