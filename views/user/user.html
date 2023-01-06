@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <body>
+        <form  onsubmit="saveToLocalStorage(event)">
+            <label>User Name</label>
+            <input id='username' type="text" name="username"  required/>
+            <label> Email</label>
+            <input id='email' type="email" name="email"  required/>
+            <label> phone Number</label>
+            <input id='phonenumber' type="number" name="phonenumber" />
+            <button> Submit </button>
+        </form>
+        <ul id='listOfUsers'></ul>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/axios/0.2.0/axios.min.js"></script>
+
+<script>
+    function saveToLocalStorage(event) {
+    event.preventDefault();
+    
+    const username = event.target.username.value;
+    const email = event.target.email.value;
+    const phonenumber = event.target.phonenumber.value;
+    // localStorage.setItem('name', name);
+    // localStorage.setItem('email', email);
+    // localStorage.setItem('phonenumber', phonenumber)
+    const obj = {
+        username,
+        email,
+        phonenumber
+    }
+   
+    axios.post("http://localhost:4000/user/add-user",obj)
+    .then((response)=>{
+       console.log(response)
+        showNewUserOnScreen(response.newUserDetails)
+        
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    //localStorage.setItem(obj.email, JSON.stringify(obj))
+    //showNewUserOnScreen(obj)
+}
+window.addEventListener("DOMContentLoaded",() => {
+   axios.get("http://localhost:4000/user/get-user")
+    .then((response)=>{     
+        console.log(response) 
+        for(var i=0;i<response.allUsers.length;i++){
+            showNewUserOnScreen(response.allUsers   [i])
+        }
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    
+})
+function showNewUserOnScreen(user){
+    
+   
+    const parentNode = document.getElementById('listOfUsers');
+    const childHTML = `<li id=${user.id}> ${user.username} - ${user.email}
+                            <button onclick=deleteUser('${user.id}')> Delete User </button>
+                            <button onclick=editUserDetails('${user.id}','${user.email}','${user.username}','${user.phonenumber}')>Edit User </button>
+                         </li>`
+
+    parentNode.innerHTML = parentNode.innerHTML + childHTML;
+    
+}
+function editUserDetails(id,emailId, name, phonenumber){
+
+document.getElementById('email').value = emailId;
+document.getElementById('username').value = name;
+document.getElementById('phonenumber').value =phonenumber;
+deleteUser(id)
+ }
+
+// deleteUser('abc@gmail.com')
+
+function deleteUser(Id){
+    
+
+    const parentNode = document.getElementById('listOfUsers');
+                const childNodeToBeDeleted = document.getElementById(Id);
+                if(childNodeToBeDeleted) {
+                    
+                    axios.delete(`http://localhost:4000/user/delete-user/${Id}`)
+                    .then(removeFromScreen(Id))
+                    .catch((err)=>{
+                        console.log(err)
+                    })
+                }
+            }
+            function removeFromScreen(id){
+                
+                let parent = document.getElementById("listOfUsers");
+                let toBeRemove = document.getElementById(id);
+                
+                parent.removeChild(toBeRemove);
+            }
+</script>
+</html>         
