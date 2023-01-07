@@ -9,7 +9,6 @@ id:{
     
 },username:{
     type:Sequelize.STRING,
-    allowNull:false,
     unique:true
 },
 email:{
@@ -19,7 +18,7 @@ email:{
 },
 phonenumber:{
     type:Sequelize.DOUBLE,
-    allowNull:false,
+    
     unique:true
 }
 });
