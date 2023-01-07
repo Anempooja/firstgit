@@ -15,14 +15,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const userRoutes=require('./routes/userRoutes');
-
-
-
+const expenseRoutes=require('./routes/expenseRoutes');
 
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use('/user',userRoutes)
+app.use('/expense',expenseRoutes)
 
 app.use(errorController.get404);
 sequelize.sync()
