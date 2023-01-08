@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+</head>
+<body>
+    <form onsubmit="loginUser(event)">
+    <label>Enter Your Name</label>
+    <input id="name" name="name"  type="text" required/>
+    <label>Email</label>
+    <input id="email" name="email" type="email"required/>
+    <label>Password</label>
+    <input id="password" type="password" name="password"required/>
+    <button id="submit">Sign Up</button>
+    </form>
+</body>
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.2.0/axios.min.js"></script>
+<script>
+function loginUser(event){
+    event.preventDefault();
+    const name=event.target.name.value;
+    const email=event.target.email.value;
+    const password=event.target.password.value;
+    const obj={
+        name,
+        email,
+        password
+    }
+    console.log(obj)
+    axios.post("http://localhost:4000/user/signUp",obj)
+
+}
+</script>
