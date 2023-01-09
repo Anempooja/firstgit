@@ -1,6 +1,6 @@
 const User=require('../ExpenseAppModels/user');
 
-
+const popup = require('node-popup');
 
 exports.signUp= async(req, res, next) => {
     try{
@@ -24,5 +24,24 @@ exports.signUp= async(req, res, next) => {
         res.status(500).json({error:err})
           console.log(err)
       }}
- 
-      
+exports.login=async(req,res,next)=>{
+ try{
+  const {email,password}=req.body;
+    await User.findAll({where:{email}})
+    .then(users=>{
+      if(users.length>0){
+        if(users[0].password==password){
+          console.log('xx')
+          return res.status(200).json({sucess:true,message:'user logged in successfuly '})}
+          else{
+            console.log('yy')
+            return res.status(404).json({sucess:false,message:'password is incorrect' })
+          }
+  }
+  else{
+    return res.status(500).json({message:'user not found' })
+  }
+})
+  }
+  catch(err){console.log(err)}
+}
