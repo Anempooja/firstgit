@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <form onsubmit="loginUser(event)">
+        <label>Email</label>
+        <input id="email" name="email" type="email" required/> 
+        <label>password</label>
+        <input id="password" name="password" type="password" required/>
+        <button id="loginButton">login</button>
+    </form>
+    
+</body>
+</html>
+<a href="C:\Users\HP 3500TX\Desktop\firstgit\expense signup.html">New User -signup</a>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.2.0/axios.min.js"></script>
+<script>
+    async function loginUser(event){
+        event.preventDefault()
+    const email=event.target.email.value;
+    const password=event.target.password.value;
+    const obj={
+        email,
+        password
+    }
+    
+    await axios.post("http://localhost:4000/user/login",obj)
+    .then((response)=>{   
+        console.log(response)
+        window.alert(response.message)
+        }
+    )
+    .catch(err=>{console.log(JSON.stringify(err))})
+    }
+</script>
