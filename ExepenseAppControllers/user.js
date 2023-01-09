@@ -1,6 +1,6 @@
 const User=require('../ExpenseAppModels/user');
 
-const popup = require('node-popup');
+const bcrypt=require('bcrypt')
 
 exports.signUp= async(req, res, next) => {
     try{
@@ -13,12 +13,14 @@ exports.signUp= async(req, res, next) => {
           }
         }
       })
-      const name=req.body.name;
-      const email=req.body.email;
-      const password=req.body.password;
-      const data=await User.create({name:name,email:email,password:password})
+      const {name,email,password}=req.body
+      bcrypt.hash(password,10,async(err,hash)=>{
+        console.log(err)
+        const data=await User.create({name,email,password:hash})
           
-         return res.status(201).json({data})}
+        return res.status(201).json({data})})
+      }
+      
       
       catch(err){
         res.status(500).json({error:err})
@@ -30,18 +32,20 @@ exports.login=async(req,res,next)=>{
     await User.findAll({where:{email}})
     .then(users=>{
       if(users.length>0){
-        if(users[0].password==password){
-          console.log('xx')
-          return res.status(200).json({sucess:true,message:'user logged in successfuly '})}
+        bcrypt.compare(password,users[0].password,(err,result)=>{
+          if(err){
+            throw new Error('user not found')
+          }
+          if(result){
+            return res.status(200).json({sucess:true,message:'user logged in successfuly '})
+          }
           else{
-            console.log('yy')
             return res.status(404).json({sucess:false,message:'password is incorrect' })
           }
-  }
-  else{
-    return res.status(500).json({message:'user not found' })
+        })  
   }
 })
-  }
-  catch(err){console.log(err)}
+  .catch(err=>{console.log(err)})
+
 }
+catch(err){console.log(err)}}
