@@ -1,6 +1,10 @@
 const User=require('../ExpenseAppModels/user');
 
 const bcrypt=require('bcrypt')
+const jwt=require('jsonwebtoken')
+function getAccessToken(id){
+    return jwt.sign({userId:id},'poojasecretkey')
+}
 
 exports.signUp= async(req, res, next) => {
     try{
@@ -37,7 +41,7 @@ exports.login=async(req,res,next)=>{
             throw new Error('user not found')
           }
           if(result){
-            return res.status(200).json({sucess:true,message:'user logged in successfuly '})
+            return res.status(200).json({sucess:true,message:'user logged in successfuly ',token:getAccessToken(users[0].id)})
           }
           else{
             return res.status(404).json({sucess:false,message:'password is incorrect' })

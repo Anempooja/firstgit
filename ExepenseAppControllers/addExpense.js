@@ -1,15 +1,19 @@
 const Expense=require('../ExpenseAppModels/expense');
-
-
+const jwt=require('jsonwebtoken')
 exports.addExpense=async(req,res,next)=>{
     try{
+        const token=req.header('Authorization')
+        const user=jwt.verify(token,'poojasecretkey')
+              
         if(!req.body.amount||!req.body.description||!req.body.category){
             console.log('please fill all the details')
             res.status(500).json({err:'not filled'})        }
         const amount=req.body.amount;
         const description=req.body.description;
         const category=req.body.category;
-        const expense=await Expense.create({amount:amount,description:description,category:category})
+        
+        const expense=await Expense.create({amount:amount,description:description,category:category,userId:user.userId})
+       
         res.status(201).json({expense})
     }
     catch(err){
@@ -18,7 +22,8 @@ exports.addExpense=async(req,res,next)=>{
 }
 exports.getExpense=async(req,res,next)=>{
     try{
-        const expenses=await Expense.findAll()
+    
+        const expenses=await Expense.findAll({where:{userid:req.user.id}})
         return res.status(200).json({Expenses:expenses})
     }
     catch(err){
