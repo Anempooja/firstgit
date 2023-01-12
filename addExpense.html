@@ -71,8 +71,17 @@ function editUser(id,amount,description,category){
 async function deleteUser(id){
     const childNodeToBeDeleted=document.getElementById(id)
     if(childNodeToBeDeleted){
-        await axios.delete(`http://localhost:4000/expense/${id}`)
-        .then(removeFromScreen(id))
+        const token=localStorage.getItem('token')
+        await axios.delete(`http://localhost:4000/expense/${id}`,{headers:{'Authorization':token}})
+        .then((response)=>{
+            if(response.status===400){
+                throw new Error(response.message)
+            }
+            else if(response.status===200){
+                console.log(response.message)
+            }
+
+        })
         .catch(err=>console.log(err))
     }
 }
