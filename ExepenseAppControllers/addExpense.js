@@ -10,7 +10,7 @@ exports.addExpense=async(req,res,next)=>{
         const description=req.body.description;
         const category=req.body.category;
         
-        const expense=await Expense.create({amount:amount,description:description,category:category,userId:req.user.id})
+        const expense=await Expense.create({amount:amount,description:description,category:category,userId:req.user.id,ispremiumuser:false})
        
         res.status(201).json({expense})
     }
