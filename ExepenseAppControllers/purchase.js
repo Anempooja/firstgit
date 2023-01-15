@@ -7,6 +7,7 @@ const dotenv=require('dotenv')
 const User = require('../ExpenseAppModels/user')
 const Expense = require('../ExpenseAppModels/expense')
 const e = require('cors')
+const sequilize = require('../ExpenseAppUtil/database')
 dotenv.config()
 exports.membership=async(req,res,next)=>{
     try{
@@ -58,22 +59,17 @@ exports.updateTransactionStatus=async(req,res)=>{
 exports.leaderboard=async(req,res,next)=>{
 
 try{
-    const users=await User.findAll()
-    const expenses=await Expense.findAll()
-    const userAggregatedExpense={}
-    expenses.forEach((expense)=>{
-        if(userAggregatedExpense[expense.userId]){
-            userAggregatedExpense[expense.userId]=userAggregatedExpense[expense.userId]+expense.amount
-        }
-        else{
-            userAggregatedExpense[expense.userId]=expense.amount
-        }
+    const userLeaderboardDetails=await User.findAll({
+        attributes:['id','name',[sequilize.fn('sum',sequilize.col('expenses.amount')),'total_cost']],
+        include:[
+            {
+                model:Expense,
+                attributes:[]
+            }
+        ],
+        group:['user.id'],
+        order:[['total_cost','DESC']]
     })
-    var userLeaderboardDetails=[]
-    users.forEach((user)=>{
-        userLeaderboardDetails.push({name:user.name,total_cost:userAggregatedExpense[user.id]})
-    })
-    console.log(userAggregatedExpense)
     res.status(200).json(userLeaderboardDetails)
 }
 catch(err){
