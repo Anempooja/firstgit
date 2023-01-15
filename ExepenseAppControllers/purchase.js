@@ -4,6 +4,9 @@ const Razorpay=require('razorpay')
 const Order=require('../ExpenseAppModels/orders')
 
 const dotenv=require('dotenv')
+const User = require('../ExpenseAppModels/user')
+const Expense = require('../ExpenseAppModels/expense')
+const e = require('cors')
 dotenv.config()
 exports.membership=async(req,res,next)=>{
     try{
@@ -36,9 +39,12 @@ exports.membership=async(req,res,next)=>{
 }
 exports.updateTransactionStatus=async(req,res)=>{
     try{
+        console.log('pooja')
+        //console.log(req.body)
         const {payment_id,order_id}=req.body
-        const order=await order.findOne({where:{orderid:order_id}})
-            const promise1=order.update({paymentid:payment_id,paymentStatus:'SCCESSFUL'})
+        const order=await Order.findAll({where:{orderid:order_id}})
+        console.log(order)
+            const promise1=order[0].update({paymentid:payment_id,paymentStatus:'SUCCESSFUL'})
             const promise2=req.user.update({ispremiumuser:true})
                 promise.all(promise1,promise2).then(()=>{
                     return res.status(202).json({success:true,message:'Transaction sucessful'})
@@ -49,3 +55,31 @@ exports.updateTransactionStatus=async(req,res)=>{
             res.status(400).json({error:err})
         }
 }
+exports.leaderboard=async(req,res,next)=>{
+
+try{
+    const users=await User.findAll()
+    const expenses=await Expense.findAll()
+    const userAggregatedExpense={}
+    expenses.forEach((expense)=>{
+        if(userAggregatedExpense[expense.userId]){
+            userAggregatedExpense[expense.userId]=userAggregatedExpense[expense.userId]+expense.amount
+        }
+        else{
+            userAggregatedExpense[expense.userId]=expense.amount
+        }
+    })
+    var userLeaderboardDetails=[]
+    users.forEach((user)=>{
+        userLeaderboardDetails.push({name:user.name,total_cost:userAggregatedExpense[user.id]})
+    })
+    console.log(userAggregatedExpense)
+    res.status(200).json(userLeaderboardDetails)
+}
+catch(err){
+    console.log(err)
+}
+}
+        
+    
+   
