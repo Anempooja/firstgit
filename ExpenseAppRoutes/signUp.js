@@ -6,4 +6,5 @@ const signUpController=require('../ExepenseAppControllers/user')
 const router=express.Router()
 router.post('/signup',signUpController.signUp)
 router.post('/login',signUpController.login)
+router.post('/forgotPassword',signUpController.forgotPassword)
 module.exports=router

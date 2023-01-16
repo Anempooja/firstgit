@@ -12,7 +12,12 @@
         <input id="email" name="email" type="email" required/> 
         <label>password</label>
         <input id="password" name="password" type="password" required/>
-        <button id="loginButton">login</button>
+        <button id="loginButton">login</button></form><br>
+        <button id="forgotPassword">forgot Password?</button>
+        
+    </form>
+    <form id="form">
+
     </form>
     
 </body>
@@ -36,9 +41,31 @@
     document.getElementById('password').value=''
         window.alert(response.message)
         localStorage.setItem('token',response.token)
-        onclick(open("file:///C:/Users/HP%203500TX/Desktop/firstgit/addExpense.html"))
+        //onclick(open("file:///C:/Users/HP%203500TX/Desktop/firstgit/addExpense.html"))
+        onclick(window.location.href = "./addexpense.html");
         }
     )
     .catch(err=>{console.log(JSON.stringify(err))})
+    }
+    document.getElementById('forgotPassword').onclick=async()=>{
+        try{
+            var form=document.getElementById('form')
+        var emailId=document.createElement('input')
+        emailId.type='email'
+        form.innerHTML=`<p>enter your emailId<p>`
+        var btnSubmit=document.createElement('Button')
+        btnSubmit.innerText='submit'
+        btnSubmit.setAttribute('onsubmit','axios.postt("http://localhost:4000/user/forgotPassword")')
+        
+        form.appendChild(emailId)
+        form.appendChild(btnSubmit)
+        }
+        catch(err){
+            console.log(err)
+        }
+        
+        
+        
+        
     }
 </script>
