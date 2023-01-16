@@ -17,10 +17,11 @@ exports.signUp= async(req, res, next) => {
           }
         }
       })
-      const {name,email,password}=req.body
+      const {name,email,password,ispremiumuser}=req.body
+      
       bcrypt.hash(password,10,async(err,hash)=>{
         console.log(err)
-        const data=await User.create({name,email,password:hash})
+        const data=await User.create({name,email,password:hash,ispremiumuser})
           
         return res.status(201).json({data})})
       }
@@ -52,4 +53,25 @@ exports.login=async(req,res,next)=>{
   .catch(err=>{console.log(err)})
 
 }
-catch(err){console.log(err)}}
+catch(err){console.log(err)}
+};
+
+exports.forgotPassword = async (req, res) => {
+  try {
+
+    
+    const email = req.params.emailId
+    const user = await User.findAll({ where: { email:email } });
+    
+    const resetlink= `<a href="http://localhost:4000/user/resetpassword/${user.id}">Reset password</a>`
+    
+    if(user){
+      
+      return res.json({resetlink:resetlink,user:user});
+    } else {
+      throw new Error("User doesnt exist");
+    }
+  } catch (err) {
+    return res.json({ message: err,sucess: false });
+  }
+};
