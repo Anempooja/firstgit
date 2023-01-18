@@ -13,13 +13,11 @@
         <label>password</label>
         <input id="password" name="password" type="password" required/>
         <button id="loginButton">login</button></form><br>
+        <button id="forgotPassword" onclick="forgotpassword(event)">forgot Password?</button>
         
         <a id="resetlink" href="C:\Users\HP 3500TX\Desktop\firstgit\expensesignup.html">New User -signup</a>
     </form>
-    <form id="form" onsubmit="gotEmail(event)">
-
-        <button id="forgotPassword" onclick="forgotpassword(event)">forgot Password?</button>
-    </form>
+   
    
     
 </body>
@@ -52,45 +50,7 @@
     }
     function forgotpassword(event){
     
-    try{
-        const form=document.getElementById('form')
-    const emailId=document.createElement('input')
-    emailId.type='email'
-    emailId.name='emailId'
-    form.innerHTML=`<p>enter your emailId<p>`
-    var btnSubmit=document.createElement('Button')
-    btnSubmit.innerText='submit'
-   
-    
-    form.appendChild(emailId)
-    form.appendChild(btnSubmit)
-    
-    }
-    catch(err){
-        console.log(err)}
-}
-async function gotEmail(event){
-    try{
-       
-        const emailId=event.target.emailId.value
-
-//const response=await axios.post(`http://localhost:4000/user/forgotPassword`)
-const parentNode = document.getElementById("resetLink")
-
-const forgotPassword = await axios.post(
-  `http://localhost:4000/user/forgotPassword/${email}`
-);
-
-console.log(forgotPassword);
-const childNode = forgotPassword.data.resetlink;
-parentNode.innerHTML = childNode;
-
-    }
-    catch(err){
-        console.log(err)
-    }
-
-
+    window.location.href="./forgotPassword.html"
 
 }
 </script>
